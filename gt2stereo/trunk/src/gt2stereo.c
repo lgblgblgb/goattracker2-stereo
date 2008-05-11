@@ -1,5 +1,5 @@
 //
-// GOATTRACKER v2.65 Stereo
+// GOATTRACKER v2.66 Stereo
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ unsigned char instrfilter[MAX_FILENAME];
 unsigned char instrpath[MAX_PATHNAME];
 unsigned char packedpath[MAX_PATHNAME];
 
-char *programname = "GoatTracker v2.65 Stereo";
+char *programname = "GoatTracker v2.66 Stereo";
 
 char textbuffer[MAX_PATHNAME];
 
@@ -295,10 +295,8 @@ int main(int argc, char **argv)
   // Init sound
   if (!sound_init(b, mr, writer, hardsid, sidmodel, ntsc, multiplier, catweasel, interpolate, customclockrate))
   {
-    printtextc(MAX_ROWS/2-1,15,"Sound init failed.");
-    printtextc(MAX_ROWS/2,15,"Check that soundcard drivers are installed.");
+    printtextc(MAX_ROWS/2-1,15,"Sound init failed. Press any key to run without sound (notice that song timer won't start)");
     waitkeynoupdate();
-    return 1;
   }
 
   // Load song if applicable
