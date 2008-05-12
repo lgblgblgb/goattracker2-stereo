@@ -41,4 +41,7 @@ goatdata.c: gt2stereo.dat
 
 clean:
 	$(RM) *.o *~
+	$(RM) asm/*.o
+	$(RM) bme/*.o
+	$(RM) resid/*.o
 	$(RM) $(EXE)
