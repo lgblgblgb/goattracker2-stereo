@@ -1,7 +1,8 @@
-GoatTracker v2.66 Stereo
+GoatTracker v2.67 Stereo
 ------------------------
 
 Editor by Lasse Öörni (loorni@gmail.com)
+HardSID 4U support by Téli Sándor.
 Uses reSID engine by Dag Lem.
 Uses 6510 crossassembler from Exomizer2 beta by Magnus Lind.
 Uses the SDL library.
@@ -30,7 +31,7 @@ Differences to normal version: (refer to normal GT2 for full documentation)
        it is assumed to be left+1. For example 21 tells to use ID 1 for right &
        ID 0 for left.
 
-- Songdata is otherwise same as normally, but there are 6 orderlists for each 
+- Songdata is otherwise same as normally, but there are 6 orderlists for each
   subtune.
 
 - Submit a patch if there are bugs in the stereo hardsid output, I have no means
@@ -78,4 +79,9 @@ v2.65     - Fixed raw keycodes over 511 interpreted as some other keys in the
             0-511 range.
             
 v2.66     - Permit running without sound.
+
+v2.67     - Cycle-exact HardSID playback.
+          - Configurable cycle-exact HardSID buffer length (separate for inter-
+            active and playback mode, see /T and /U command line options)
+
 

@@ -86,23 +86,29 @@ void initchannels(void)
 
 void initsong(int num, int mode)
 {
+  sound_suspend();
   songinit = PLAY_STOPPED;
   psnum = num;
   songinit = mode;
   startpattpos = 0;
+  sound_flush();
 }
 
 void initsongpos(int num, int mode, int pattpos)
 {
+  sound_suspend();
   songinit = PLAY_STOPPED;
   psnum = num;
   songinit = mode;
   startpattpos = pattpos;
+  sound_flush();
 }
 
 void stopsong(void)
 {
+  sound_suspend();
   songinit = PLAY_STOP;
+  sound_flush();
 }
 
 void rewindsong(void)
@@ -140,7 +146,7 @@ void playtestnote(int note, int ins, int chnnum)
 
   chn[chnnum].instr = ins;
   chn[chnnum].newnote = note;
-  if (songinit == 0x80)
+  if (songinit == PLAY_STOPPED)
   {
     chn[chnnum].tick = (instr[ins].gatetimer & 0x3f)+1;
     chn[chnnum].gatetimer = instr[ins].gatetimer & 0x3f;
@@ -159,8 +165,9 @@ void mutechannel(int chnnum)
 
 int isplaying(void)
 {
-  return (songinit == PLAY_PLAYING);
+  return (songinit != PLAY_STOPPED);
 }
+
 void playroutine(void)
 {
   INSTR *iptr;
