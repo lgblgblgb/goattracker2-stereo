@@ -1,5 +1,5 @@
 ;-------------------------------------------------------------------------------
-; GoatTracker V2.63 stereo playroutine
+; GoatTracker V2.68 stereo playroutine
 ;
 ; NOTE: This playroutine source code does not fall under the GPL license!
 ; Use it, or song binaries created from it freely for any purpose, commercial
@@ -1309,10 +1309,6 @@ mt_loadregs:
               .ENDIF
                 cpx #21
                 bcs mt_loadregs_sid2
-                lda mt_chnad,x
-                sta SIDBASE+$05,x
-                lda mt_chnsr,x
-                sta SIDBASE+$06,x
                 lda mt_chnpulselo,x
               .IF (SIMPLEPULSE == 0)
                 sta SIDBASE+$02,x
@@ -1321,7 +1317,11 @@ mt_loadregs:
               .ELSE
                 sta SIDBASE+$02,x
                 sta SIDBASE+$03,x
-              .ENDIF
+              .ENDIF                
+                lda mt_chnsr,x
+                sta SIDBASE+$06,x                
+                lda mt_chnad,x
+                sta SIDBASE+$05,x
 mt_loadregswavefreq:
                 lda mt_chnfreqlo,x
                 sta SIDBASE+$00,x
@@ -1341,10 +1341,6 @@ mt_nohr_legato:
               .ENDIF
 
 mt_loadregs_sid2:
-                lda mt_chnad,x
-                sta SID2BASE-21+$05,x
-                lda mt_chnsr,x
-                sta SID2BASE-21+$06,x
                 lda mt_chnpulselo,x
               .IF (SIMPLEPULSE == 0)
                 sta SID2BASE-21+$02,x
@@ -1354,6 +1350,10 @@ mt_loadregs_sid2:
                 sta SID2BASE-21+$02,x
                 sta SID2BASE-21+$03,x
               .ENDIF
+                lda mt_chnsr,x
+                sta SID2BASE-21+$06,x
+                lda mt_chnad,x
+                sta SID2BASE-21+$05,x
 mt_loadregswavefreq_sid2:
                 lda mt_chnfreqlo,x
                 sta SID2BASE-21+$00,x
@@ -1384,8 +1384,8 @@ mt_sfxexec:     lda mt_chnsfxlo,x
                 cpy #$02
                 beq mt_sfxexec_frame0
                 bcs mt_sfxexec_framen
-                sta SIDBASE+$05,x                ;Hardrestart before sound FX
-                sta SIDBASE+$06,x                ;begins
+                sta SIDBASE+$06,x                ;Hardrestart before sound FX
+                sta SIDBASE+$05,x                ;begins
                 jmp mt_loadregswavefreq
 mt_sfxexec_frame0:
                 tay
@@ -1428,8 +1428,8 @@ mt_sfxexec_sid2:
                 cpy #$02
                 beq mt_sfxexec_frame0_sid2
                 bcs mt_sfxexec_framen_sid2
-                sta SID2BASE-21+$05,x                ;Hardrestart before sound FX
-                sta SID2BASE-21+$06,x                ;begins
+                sta SID2BASE-21+$06,x                ;Hardrestart before sound FX
+                sta SID2BASE-21+$05,x                ;begins
                 jmp mt_loadregswavefreq_sid2
 mt_sfxexec_frame0_sid2:
                 tay

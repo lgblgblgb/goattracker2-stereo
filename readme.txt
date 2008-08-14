@@ -1,4 +1,4 @@
-GoatTracker v2.67 Stereo
+GoatTracker v2.68 Stereo
 ------------------------
 
 Editor by Lasse Öörni (loorni@gmail.com)
@@ -13,6 +13,9 @@ Distributed under GNU General Public License
 
 Covert BitOps homepage:
 http://covertbitops.c64.org
+
+GoatTracker 2 SourceForge.net page:
+http://sourceforge.net/projects/goattracker2
 
 
 Differences to normal version: (refer to normal GT2 for full documentation)
@@ -83,5 +86,9 @@ v2.66     - Permit running without sound.
 v2.67     - Cycle-exact HardSID playback.
           - Configurable cycle-exact HardSID buffer length (separate for inter-
             active and playback mode, see /T and /U command line options)
+            
+v2.68     - SID register write order tweaked to resemble JCH NewPlayer 21.
+          - reSID random write delay 40 cycles (simulating a badline) by 
+            default.
 
 
