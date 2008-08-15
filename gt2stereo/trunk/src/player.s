@@ -860,14 +860,6 @@ mt_newnoteinit:
                 beq mt_nonewnoteinit
               .ENDIF
 
-                lda mt_insad-1,y                ;Load Attack/Decay
-                sta mt_chnad,x
-                lda mt_inssr-1,y                ;Load Sustain/Release
-                sta mt_chnsr,x
-
-                lda mt_inswaveptr-1,y           ;Load waveptr
-                sta mt_chnwaveptr,x
-         
               .IF (FIXEDPARAMS == 0)
                 lda mt_insfirstwave-1,y         ;Load first frame waveform
               .IF (NOFIRSTWAVECMD == 0)
@@ -887,7 +879,7 @@ mt_skipwave2:
                 inc mt_chngate,x
               .ENDIF
 mt_skipwave:
-                
+
               .IF (NOPULSE == 0)
                 lda mt_inspulseptr-1,y          ;Load pulseptr (if nonzero)
                 beq mt_skippulse
@@ -903,7 +895,6 @@ mt_skippulse:
                 lda mt_insfiltptr-1,y           ;Load filtptr (if nonzero)
                 beq mt_skipfilt
                 bcs mt_loadfilt_sid2
-
 mt_loadfilt:
                 sta mt_filtstep+1
               .IF (NOFILTERMOD == 0)
@@ -919,6 +910,14 @@ mt_loadfilt_sid2:
               .ENDIF
               .ENDIF
 mt_skipfilt:
+
+                lda mt_inswaveptr-1,y           ;Load waveptr
+                sta mt_chnwaveptr,x
+
+                lda mt_insad-1,y                ;Load Attack/Decay
+                sta mt_chnad,x
+                lda mt_inssr-1,y                ;Load Sustain/Release
+                sta mt_chnsr,x
 
               .IF (NOEFFECTS == 0)
                 lda mt_chnnewparam,x            ;Execute tick 0 FX after

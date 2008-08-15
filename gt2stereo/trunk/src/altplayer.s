@@ -856,42 +856,6 @@ mt_newnoteinit:
                 beq mt_nonewnoteinit
               .ENDIF
 
-                lda mt_insad-1,y                ;Load Attack/Decay
-                sta mt_chnad,x
-                lda mt_inssr-1,y                ;Load Sustain/Release
-                sta mt_chnsr,x
-
-              .IF (NOPULSE == 0)
-                lda mt_inspulseptr-1,y          ;Load pulseptr (if nonzero)
-                beq mt_skippulse
-                sta mt_chnpulseptr,x
-              .IF (NOPULSEMOD == 0)
-                lda #$00                        ;Reset pulse step duration
-                sta mt_chnpulsetime,x
-              .ENDIF
-              .ENDIF
-mt_skippulse:
-              .IF (NOFILTER == 0)
-                cpx #21
-                lda mt_insfiltptr-1,y         ;Load filtptr (if nonzero)
-                beq mt_skipfilt
-                bcs mt_loadfilt_sid2
-
-mt_loadfilt:
-                sta mt_filtstep+1
-              .IF (NOFILTERMOD == 0)
-                lda #$00
-                sta mt_filttime+1
-              .ENDIF
-                bcc mt_skipfilt
-mt_loadfilt_sid2:
-                sta mt_filtstep_sid2+1
-              .IF (NOFILTERMOD == 0)
-                lda #$00
-                sta mt_filttime_sid2+1
-              .ENDIF
-              .ENDIF
-mt_skipfilt:
               .IF (FIXEDPARAMS == 0)
                 lda mt_insfirstwave-1,y         ;Load first frame waveform
               .IF (NOFIRSTWAVECMD == 0)
@@ -911,8 +875,46 @@ mt_skipwave2:
                 inc mt_chngate,x
               .ENDIF
 mt_skipwave:
+
+              .IF (NOPULSE == 0)
+                lda mt_inspulseptr-1,y          ;Load pulseptr (if nonzero)
+                beq mt_skippulse
+                sta mt_chnpulseptr,x
+              .IF (NOPULSEMOD == 0)
+                lda #$00                        ;Reset pulse step duration
+                sta mt_chnpulsetime,x
+              .ENDIF
+              .ENDIF
+mt_skippulse:
+              .IF (NOFILTER == 0)
+                cpx #21
+                lda mt_insfiltptr-1,y         ;Load filtptr (if nonzero)
+                beq mt_skipfilt
+                bcs mt_loadfilt_sid2
+mt_loadfilt:
+                sta mt_filtstep+1
+              .IF (NOFILTERMOD == 0)
+                lda #$00
+                sta mt_filttime+1
+              .ENDIF
+                bcc mt_skipfilt
+mt_loadfilt_sid2:
+                sta mt_filtstep_sid2+1
+              .IF (NOFILTERMOD == 0)
+                lda #$00
+                sta mt_filttime_sid2+1
+              .ENDIF
+              .ENDIF
+mt_skipfilt:
+
                 lda mt_inswaveptr-1,y           ;Load waveptr
                 sta mt_chnwaveptr,x
+                
+				lda mt_insad-1,y                ;Load Attack/Decay
+                sta mt_chnad,x
+                lda mt_inssr-1,y                ;Load Sustain/Release
+                sta mt_chnsr,x
+
               .IF (NOEFFECTS == 0)
                 lda mt_chnnewparam,x            ;Execute tick 0 FX after
 mt_tick0jump1:
