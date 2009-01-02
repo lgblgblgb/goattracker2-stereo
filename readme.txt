@@ -4,9 +4,11 @@ GoatTracker v2.68 Stereo
 Editor by Lasse Öörni (loorni@gmail.com)
 HardSID 4U support by Téli Sándor.
 Uses reSID engine by Dag Lem.
+Uses reSID distortion / nonlinearity by Antti Lankila.
 Uses 6510 crossassembler from Exomizer2 beta by Magnus Lind.
 Uses the SDL library.
 GoatTracker icon by Antonio Vera.
+Command quick reference by Simon Bennett.
 
 Distributed under GNU General Public License
 (see the file COPYING for details)
@@ -87,8 +89,10 @@ v2.67     - Cycle-exact HardSID playback.
           - Configurable cycle-exact HardSID buffer length (separate for inter-
             active and playback mode, see /T and /U command line options)
             
-v2.68     - SID register write order tweaked to resemble JCH NewPlayer 21.
-          - reSID random write delay 40 cycles (simulating a badline) by 
-            default.
-
+v2.68     - Fixed sound uninit crash with multicore processors (?)
+          - SID register write order tweaked to resemble JCH NewPlayer 21.
+          - New reSID-fp engine (with distortion & nonlinearity) from Antti
+            Lankila integrated. Activated with /I command line option parameters
+            2 & 3.
+          - Command quick reference by Simon Bennett included.
 
