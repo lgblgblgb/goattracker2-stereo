@@ -165,7 +165,7 @@ int main(int argc, char **argv)
         printtext(0,y++,15,"/Fxx Set custom SID clock cycles per second (0 = use PAL/NTSC default)");
         printtext(0,y++,15,"/Hxx Use HardSID (0 = off, 1 = HardSID ID0 2 = HardSID ID1 etc.)");
         printtext(0,y++,15,"     Use high nybble (it's hexadecimal) to specify right HardSID ID");
-        printtext(0,y++,15,"/Ixx Set reSID interpolation (0 = off, 1 = on) DEFAULT=off");
+        printtext(0,y++,15,"/Ixx Set reSID interpolation (0 = off, 1 = on, 2 = distortion, 3 = distortion & on) DEFAULT=off");
         printtext(0,y++,15,"/Kxx Note-entry mode (0 = PROTRACKER 1 = DMC) DEFAULT=PROTRK.");
         printtext(0,y++,15,"/Lxx SID memory locations in hex. DEFAULT=D500D400");
         printtext(0,y++,15,"/Mxx Set sound mixing rate DEFAULT=44100");
@@ -324,6 +324,9 @@ int main(int argc, char **argv)
     docommand();
   }
 
+  // Shutdown sound output now
+  sound_uninit();
+
   // Save configuration
   #ifndef __WIN32__
   strcpy(filename, getenv("HOME"));
@@ -353,7 +356,7 @@ int main(int argc, char **argv)
                         ";Speed multiplier (0 = 25Hz, 1 = 1X, 2 = 2X etc.)\n%d\n\n"
                         ";Use CatWeasel SID (0 = off, 1 = on)\n%d\n\n"
                         ";Hardrestart ADSR parameter\n$%04x\n\n"
-                        ";reSID interpolation (0 = off, 1 = on)\n%d\n\n"
+                        ";reSID interpolation (0 = off, 1 = on, 2 = distortion, 3 = distortion & on)\n%d\n\n"
                         ";Hexadecimal pattern display (0 = off, 1 = on)\n%d\n\n"
                         ";SID baseaddresses\n$%08x\n\n"
                         ";Finevibrato mode (0 = off, 1 = on)\n%d\n\n"

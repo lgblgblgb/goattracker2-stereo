@@ -190,8 +190,8 @@ int sound_init(unsigned b, unsigned mr, unsigned writer, unsigned hardsid, unsig
     goto SOUNDOK;
   }
 
-  lbuffer = malloc(MIXBUFFERSIZE * sizeof(Sint16));
-  rbuffer = malloc(MIXBUFFERSIZE * sizeof(Sint16));
+  if (!lbuffer) lbuffer = malloc(MIXBUFFERSIZE * sizeof(Sint16));
+  if (!rbuffer) rbuffer = malloc(MIXBUFFERSIZE * sizeof(Sint16));
   if ((!lbuffer) || (!rbuffer)) return 0;
 
   if (writer)
@@ -209,7 +209,7 @@ int sound_init(unsigned b, unsigned mr, unsigned writer, unsigned hardsid, unsig
     firsttimeinit = 0;
   }
   playspeed = snd_mixrate;
-  sid_init(playspeed, m, ntsc, interpolate, customclockrate);
+  sid_init(playspeed, m, ntsc, interpolate & 1, customclockrate, interpolate >> 1);
 
   snd_player = &sound_playrout;
   snd_setcustommixer(sound_mixer);
@@ -226,6 +226,10 @@ void sound_uninit(void)
 
   if (!initted) return;
   initted = 0;
+
+  // Apparently a delay is needed to make sure the sound timer thread is
+  // not mixing stuff anymore, and we can safely delete related structures
+  SDL_Delay(50);
 
   if (usehardsid || usecatweasel)
   {
