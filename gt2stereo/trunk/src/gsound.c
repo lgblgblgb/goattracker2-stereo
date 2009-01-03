@@ -216,7 +216,6 @@ int sound_init(unsigned b, unsigned mr, unsigned writer, unsigned hardsid, unsig
 
   SOUNDOK:
   initted = 1;
-  atexit(sound_uninit);
   return 1;
 }
 
