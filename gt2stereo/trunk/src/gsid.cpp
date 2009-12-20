@@ -29,12 +29,6 @@ unsigned char altsidorder[] =
    0x04,0x00,0x01,0x02,0x03,0x05,0x06,
    0x0b,0x07,0x08,0x09,0x0a,0x0c,0x0d,
    0x12,0x0e,0x0f,0x10,0x11,0x13,0x14};
-
-FILTERPARAMS defaultfilterparams =
-  {0.50f, 3.3e6f, 1.0e-4f,
-   1147036.4394268463f, 274228796.97550374f, 1.0066634233403395f, 16125.154840564108f,
-   5.5f, 20.f,
-   0.9613160610660189f};
    
 FILTERPARAMS filterparams =
   {0.50f, 3.3e6f, 1.0e-4f,
@@ -137,28 +131,6 @@ void sid_init(int speed, unsigned m, unsigned ntsc, unsigned interpolate, unsign
     if (sidfp2) sidfp2->set_chip_model(MOS6581);
   }
   
-  // Restore any zero resid-fp filter parameter from default config
-  if (filterparams.distortionrate == 0.0f)
-    filterparams.distortionrate = defaultfilterparams.distortionrate;
-  if (filterparams.distortionpoint == 0.0f)
-    filterparams.distortionpoint = defaultfilterparams.distortionpoint;
-  if (filterparams.distortioncfthreshold == 0.0f)
-    filterparams.distortioncfthreshold = defaultfilterparams.distortioncfthreshold;
-  if (filterparams.type3baseresistance == 0.0f)
-    filterparams.type3baseresistance = defaultfilterparams.type3baseresistance;
-  if (filterparams.type3offset == 0.0f)
-    filterparams.type3offset = defaultfilterparams.type3offset;
-  if (filterparams.type3steepness == 0.0f)
-    filterparams.type3steepness = defaultfilterparams.type3steepness;
-  if (filterparams.type3minimumfetresistance == 0.0f)
-    filterparams.type3minimumfetresistance = defaultfilterparams.type3minimumfetresistance;
-  if (filterparams.type4k == 0.0f)
-    filterparams.type4k = defaultfilterparams.type4k;
-  if (filterparams.type4b == 0.0f)
-    filterparams.type4b = defaultfilterparams.type4b;
-  if (filterparams.voicenonlinearity == 0.0f)
-    filterparams.voicenonlinearity = defaultfilterparams.voicenonlinearity;
-
   if (sidfp)
   {
     sidfp->get_filter().set_distortion_properties(
