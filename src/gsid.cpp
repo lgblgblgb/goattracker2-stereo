@@ -29,7 +29,7 @@ unsigned char altsidorder[] =
    0x04,0x00,0x01,0x02,0x03,0x05,0x06,
    0x0b,0x07,0x08,0x09,0x0a,0x0c,0x0d,
    0x12,0x0e,0x0f,0x10,0x11,0x13,0x14};
-   
+
 FILTERPARAMS filterparams =
   {0.50f, 3.3e6f, 1.0e-4f,
    1147036.4394268463f, 274228796.97550374f, 1.0066634233403395f, 16125.154840564108f,
@@ -187,6 +187,7 @@ int sid_fillbuffer(short *lptr, short *rptr, int samples)
   int badline = rand() % NUMSIDREGS;
 
   tdelta = clockrate * samples / samplerate;
+  if (tdelta <= 0) return total;
 
   for (c = 0; c < NUMSIDREGS; c++)
   {
@@ -243,6 +244,8 @@ int sid_fillbuffer(short *lptr, short *rptr, int samples)
     rptr += result;
     samples -= result;
     tdelta -= SIDWRITEDELAY;
+
+    if (tdelta <= 0) return total;
   }
 
   tdelta2 = tdelta;
@@ -261,6 +264,8 @@ int sid_fillbuffer(short *lptr, short *rptr, int samples)
   while (samples)
   {
     tdelta = clockrate * samples / samplerate;
+    if (tdelta <= 0) return total;
+        
     if (sid) result = sid->clock(tdelta, lptr, samples);
     if (sidfp) result = sidfp->clock(tdelta, lptr, samples);
     tdelta = clockrate * samples / samplerate;
