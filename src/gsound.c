@@ -545,8 +545,9 @@ void InitHardDLL()
   HardSID_Write = (lpHardSID_Write) GetProcAddress(hardsiddll, "HardSID_Write");
   HardSID_Flush = (lpHardSID_Flush) GetProcAddress(hardsiddll, "HardSID_Flush");
   HardSID_SoftFlush = (lpHardSID_SoftFlush) GetProcAddress(hardsiddll, "HardSID_SoftFlush");
-  if ((HardSID_Delay) && (HardSID_Write)) cycleexacthardsid = TRUE;
-
+  if ((HardSID_Delay) && (HardSID_Write) && (HardSID_Flush) && (HardSID_SoftFlush))
+    cycleexacthardsid = TRUE;
+  
   InitHardSID_Mapper();
   dll_initialized = TRUE;
 }
