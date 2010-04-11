@@ -65,7 +65,6 @@ unsigned residdelay = 0;
 unsigned hardsidbufinteractive = 20;
 unsigned hardsidbufplayback = 400;
 
-char *configptr;
 char configbuf[MAX_PATHNAME];
 char loadedsongfilename[MAX_FILENAME];
 char songfilename[MAX_FILENAME];
@@ -100,6 +99,8 @@ int main(int argc, char **argv)
   filename[strlen(filename)-3] = 'c';
   filename[strlen(filename)-2] = 'f';
   filename[strlen(filename)-1] = 'g';
+  #elif __amigaos__
+  strcpy(filename, "PROGDIR:goattrk2.cfg");
   #else
   strcpy(filename, getenv("HOME"));
   strcat(filename, "/.goattrk/gt2stereo.cfg");
@@ -141,15 +142,8 @@ int main(int argc, char **argv)
     getfloatparam(configfile, &filterparams.type4k);
     getfloatparam(configfile, &filterparams.type4b);
     getfloatparam(configfile, &filterparams.voicenonlinearity);
+    getparam(configfile, &win_fullscreen);
     fclose(configfile);
-  }
-  zeropageadr &= 0xff;
-  playeradr &= 0xff00;
-  if (!stepsize) stepsize = 4;
-
-  if (!initscreen())
-  {
-    return 1;
   }
 
   // Init pathnames
@@ -158,37 +152,44 @@ int main(int argc, char **argv)
   // Scan command line
   for (c = 1; c < argc; c++)
   {
+    #ifdef __WIN32__
     if ((argv[c][0] == '-') || (argv[c][0] == '/'))
+    #else
+    if (argv[c][0] == '-')
+    #endif
     {
       int y = 0;
       switch(toupper(argv[c][1]))
       {
         case '?':
+        if (!initscreen())
+          return 1;
         printtext(0,y++,15,"Usage: GT2STEREO [songname] [options]");
         printtext(0,y++,15,"Options:");
-        printtext(0,y++,15,"/Axx Set ADSR parameter for hardrestart in hex. DEFAULT=0F00");
-        printtext(0,y++,15,"/Bxx Set sound buffer length in milliseconds DEFAULT=100");
-        printtext(0,y++,15,"/Cxx Use CatWeasel MK3 PCI SID (0 = off, 1 = on)");
-        printtext(0,y++,15,"/Dxx Pattern row display (0 = decimal, 1 = hexadecimal)");
-        printtext(0,y++,15,"/Exx Set emulated SID model (0 = 6581 1 = 8580) DEFAULT=6581");
-        printtext(0,y++,15,"/Fxx Set custom SID clock cycles per second (0 = use PAL/NTSC default)");
-        printtext(0,y++,15,"/Hxx Use HardSID (0 = off, 1 = HardSID ID0 2 = HardSID ID1 etc.)");
+        printtext(0,y++,15,"-Axx Set ADSR parameter for hardrestart in hex. DEFAULT=0F00");
+        printtext(0,y++,15,"-Bxx Set sound buffer length in milliseconds DEFAULT=100");
+        printtext(0,y++,15,"-Cxx Use CatWeasel MK3 PCI SID (0 = off, 1 = on)");
+        printtext(0,y++,15,"-Dxx Pattern row display (0 = decimal, 1 = hexadecimal)");
+        printtext(0,y++,15,"-Exx Set emulated SID model (0 = 6581 1 = 8580) DEFAULT=6581");
+        printtext(0,y++,15,"-Fxx Set custom SID clock cycles per second (0 = use PAL/NTSC default)");
+        printtext(0,y++,15,"-Hxx Use HardSID (0 = off, 1 = HardSID ID0 2 = HardSID ID1 etc.)");
         printtext(0,y++,15,"     Use high nybble (it's hexadecimal) to specify right HardSID ID");
-        printtext(0,y++,15,"/Ixx Set reSID interpolation (0 = off, 1 = on, 2 = distortion, 3 = distortion & on) DEFAULT=off");
-        printtext(0,y++,15,"/Kxx Note-entry mode (0 = PROTRACKER 1 = DMC) DEFAULT=PROTRK.");
-        printtext(0,y++,15,"/Lxx SID memory locations in hex. DEFAULT=D500D400");
-        printtext(0,y++,15,"/Mxx Set sound mixing rate DEFAULT=44100");
-        printtext(0,y++,15,"/Oxx Set pulseoptimization/skipping (0 = off, 1 = on) DEFAULT=on");
-        printtext(0,y++,15,"/Rxx Set realtime-effect optimization/skipping (0 = off, 1 = on) DEFAULT=on");
-        printtext(0,y++,15,"/Sxx Set speed multiplier (0 for 25Hz, 1 for 1x, 2 for 2x etc.)");
-        printtext(0,y++,15,"/Txx Set HardSID interactive mode sound buffer length in milliseconds DEFAULT=20, max.buffering=0");
-        printtext(0,y++,15,"/Uxx Set HardSID playback mode sound buffer length in milliseconds DEFAULT=400, max.buffering=0");
-        printtext(0,y++,15,"/Vxx Set finevibrato conversion (0 = off, 1 = on) DEFAULT=1");
-        printtext(0,y++,15,"/Zxx Set random reSID write delay in cycles (0 = off) DEFAULT=0");
-        printtext(0,y++,15,"/N   Use NTSC timing");
-        printtext(0,y++,15,"/P   Use PAL timing (DEFAULT)");
-        printtext(0,y++,15,"/W   Write sound output to a file SIDAUDIO.RAW");
-        printtext(0,y++,15,"/?   Show this info again");
+        printtext(0,y++,15,"-Ixx Set reSID interpolation (0 = off, 1 = on, 2 = distortion, 3 = distortion & on) DEFAULT=off");
+        printtext(0,y++,15,"-Kxx Note-entry mode (0 = PROTRACKER 1 = DMC) DEFAULT=PROTRK.");
+        printtext(0,y++,15,"-Lxx SID memory locations in hex. DEFAULT=D500D400");
+        printtext(0,y++,15,"-Mxx Set sound mixing rate DEFAULT=44100");
+        printtext(0,y++,15,"-Oxx Set pulseoptimization/skipping (0 = off, 1 = on) DEFAULT=on");
+        printtext(0,y++,15,"-Rxx Set realtime-effect optimization/skipping (0 = off, 1 = on) DEFAULT=on");
+        printtext(0,y++,15,"-Sxx Set speed multiplier (0 for 25Hz, 1 for 1x, 2 for 2x etc.)");
+        printtext(0,y++,15,"-Txx Set HardSID interactive mode sound buffer length in milliseconds DEFAULT=20, max.buffering=0");
+        printtext(0,y++,15,"-Uxx Set HardSID playback mode sound buffer length in milliseconds DEFAULT=400, max.buffering=0");
+        printtext(0,y++,15,"-Vxx Set finevibrato conversion (0 = off, 1 = on) DEFAULT=1");
+        printtext(0,y++,15,"-Xxx Set window type (0 = window, 1 = fullscreen) DEFAULT=0");
+        printtext(0,y++,15,"-Zxx Set random reSID write delay in cycles (0 = off) DEFAULT=0");
+        printtext(0,y++,15,"-N   Use NTSC timing");
+        printtext(0,y++,15,"-P   Use PAL timing (DEFAULT)");
+        printtext(0,y++,15,"-W   Write sound output to a file SIDAUDIO.RAW");
+        printtext(0,y++,15,"-?   Show this info again");
         waitkeynoupdate();
         return 0;
 
@@ -274,6 +275,10 @@ int main(int argc, char **argv)
         writer = 1;
         break;
 
+        case 'X':
+        sscanf(&argv[c][2], "%u", &win_fullscreen);
+        break;
+
         case 'C':
         sscanf(&argv[c][2], "%u", &catweasel);
         break;
@@ -302,6 +307,9 @@ int main(int argc, char **argv)
   // Validate parameters
   sidmodel &= 1;
   adparam &= 0xffff;
+  zeropageadr &= 0xff;
+  playeradr &= 0xff00;
+  if (!stepsize) stepsize = 4;
   if (multiplier > 16) multiplier = 16;
   if (keypreset > 2) keypreset = 0;
   if ((finevibrato == 1) && (multiplier < 2)) usefinevib = 1;
@@ -310,6 +318,10 @@ int main(int argc, char **argv)
   if (optimizerealtime > 1) optimizerealtime = 1;
   if (residdelay > 63) residdelay = 63;
   if (customclockrate < 100) customclockrate = 0;
+
+  // Set screenmode
+  if (!initscreen())
+    return 1;
 
   // Reset channels/song
   initchannels();
@@ -338,10 +350,14 @@ int main(int argc, char **argv)
 
   // Save configuration
   #ifndef __WIN32__
+  #ifdef __amigaos__
+  strcpy(filename, "PROGDIR:goattrk2.cfg");
+  #else
   strcpy(filename, getenv("HOME"));
   strcat(filename, "/.goattrk");
   mkdir(filename, S_IRUSR | S_IWUSR | S_IXUSR);
   strcat(filename, "/gt2stereo.cfg");
+  #endif
   #endif
   configfile = fopen(filename, "wt");
   if (configfile)
@@ -384,7 +400,8 @@ int main(int argc, char **argv)
                         ";reSID-fp type 3 minimum FET resistance\n%f\n\n"
                         ";reSID-fp type 4 k\n%f\n\n"
                         ";reSID-fp type 4 b\n%f\n\n"
-                        ";reSID-fp voice nonlinearity\n%f\n\n",
+                        ";reSID-fp voice nonlinearity\n%f\n\n"
+                        ";Window type (0 = window, 1 = fullscreen)\n%d\n\n",
     b,
     mr,
     hardsid,
@@ -418,7 +435,8 @@ int main(int argc, char **argv)
     filterparams.type3minimumfetresistance,
     filterparams.type4k,
     filterparams.type4b,
-    filterparams.voicenonlinearity);
+    filterparams.voicenonlinearity,
+    win_fullscreen);
     fclose(configfile);
   }
 
