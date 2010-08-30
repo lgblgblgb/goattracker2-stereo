@@ -30,9 +30,9 @@ Differences to normal version: (refer to normal GT2 for full documentation)
 
 - Command line differences:
 
-  /Lxx (SID address parameter) takes addresses of both sids written one after
+  -Lxx (SID address parameter) takes addresses of both sids written one after
        another, right SID in the high word, for example D500D400
-  /Hxx (use hardsid) is in hexadecimal format. High nybble specifies right
+  -Hxx (use hardsid) is in hexadecimal format. High nybble specifies right
        hardsid ID and low nybble left hardsid ID. If right hardsid ID is omitted
        it is assumed to be left+1. For example 21 tells to use ID 1 for right &
        ID 0 for left.
