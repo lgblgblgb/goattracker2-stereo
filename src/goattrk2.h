@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <math.h>
 #include "bme.h"
 
 #include "gcommon.h"
@@ -110,5 +111,6 @@ void clear(void);
 void prevmultiplier(void);
 void nextmultiplier(void);
 void editadsr(void);
+void calculatefreqtable(void);
 
 #endif

@@ -393,17 +393,17 @@ int sound_thread(void *userdata)
     {
       unsigned o = sid_getorder(c);
 
-  	  // Extra delay before loading the waveform (and mt_chngate,x)
-  	  if ((o == 4) || (o == 11) || (o == 18))
-  	  {
-        HardSID_Write(lefthardsid, SIDWRITEDELAY+SIDWAVEDELAY, o, sidreg[o]);
-  	    cycles -= SIDWRITEDELAY+SIDWAVEDELAY;
-      }
-	    else 
+      // Extra delay before loading the waveform (and mt_chngate,x)
+      if ((o == 4) || (o == 11) || (o == 18))
       {
-		    HardSID_Write(lefthardsid, SIDWRITEDELAY, o, sidreg[o]);
-		    cycles -= SIDWRITEDELAY;
-	    }
+        HardSID_Write(lefthardsid, SIDWRITEDELAY+SIDWAVEDELAY, o, sidreg[o]);
+        cycles -= SIDWRITEDELAY+SIDWAVEDELAY;
+      }
+      else 
+      {
+        HardSID_Write(lefthardsid, SIDWRITEDELAY, o, sidreg[o]);
+        cycles -= SIDWRITEDELAY;
+      }
     }
     
     // Right side
@@ -411,17 +411,17 @@ int sound_thread(void *userdata)
     {
       unsigned o = sid_getorder(c);
 
-  	  // Extra delay before loading the waveform (and mt_chngate,x)
-  	  if ((o == 4) || (o == 11) || (o == 18))
-  	  {
-        HardSID_Write(righthardsid, SIDWRITEDELAY+SIDWAVEDELAY, o, sidreg2[o]);
-  	    cycles -= SIDWRITEDELAY+SIDWAVEDELAY;
-      }
-	    else 
+      // Extra delay before loading the waveform (and mt_chngate,x)
+      if ((o == 4) || (o == 11) || (o == 18))
       {
-		    HardSID_Write(righthardsid, SIDWRITEDELAY, o, sidreg2[o]);
-		    cycles -= SIDWRITEDELAY;
-	    }
+        HardSID_Write(righthardsid, SIDWRITEDELAY+SIDWAVEDELAY, o, sidreg2[o]);
+        cycles -= SIDWRITEDELAY+SIDWAVEDELAY;
+      }
+      else 
+      {
+        HardSID_Write(righthardsid, SIDWRITEDELAY, o, sidreg2[o]);
+        cycles -= SIDWRITEDELAY;
+      }
     }
 
     // Now wait the rest of frame
@@ -433,12 +433,12 @@ int sound_thread(void *userdata)
       cycles -= runnow;
     }
 
-  	if ((flush_cycles_interactive>0 && interactive && cycles_after_flush>=flush_cycles_interactive) ||
-		  (flush_cycles_playback>0 && !interactive && cycles_after_flush>=flush_cycles_playback)) 
+    if ((flush_cycles_interactive>0 && interactive && cycles_after_flush>=flush_cycles_interactive) ||
+      (flush_cycles_playback>0 && !interactive && cycles_after_flush>=flush_cycles_playback)) 
     {
       if (HardSID_SoftFlush)
         HardSID_SoftFlush(lefthardsid);
-		  cycles_after_flush = 0;
+      cycles_after_flush = 0;
     }
   }
 
