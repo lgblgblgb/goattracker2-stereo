@@ -1,4 +1,4 @@
-GoatTracker v2.70 Stereo
+GoatTracker v2.71 Stereo
 ------------------------
 
 Editor by Lasse Öörni (loorni@gmail.com)
@@ -100,5 +100,10 @@ v2.68     - Fixed sound uninit crash with multicore processors (?)
 v2.69     - Fixed click bug in reSID audio output.
           - Newest reSID-fp code integrated.
           - reSID-fp filter parameters adjustable from the configuration file.
-          
+
 v2.70     - Fixed possible crash on some versions of the HardSID dll.
+
+v2.71     - Added keycode fix patch from Valerio Cannone.
+          - Added fullscreen switch patch from Raine M. Ekman (see /X option)
+          - Added context mode to online help patch from Raine M. Ekman.
+          - Added /G command line option for setting A-4 pitch.
