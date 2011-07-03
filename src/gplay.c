@@ -106,9 +106,12 @@ void initsongpos(int num, int mode, int pattpos)
 
 void stopsong(void)
 {
-  sound_suspend();
-  songinit = PLAY_STOP;
-  sound_flush();
+  if (songinit != PLAY_STOPPED)
+  {
+    sound_suspend();
+    songinit = PLAY_STOP;
+    sound_flush();
+  }
 }
 
 void rewindsong(void)
@@ -999,7 +1002,7 @@ void playroutine(void)
       PULSEEXEC:
       if (optimizepulse)
       {
-        if ((songinit != 0x80) && (cptr->tick == cptr->gatetimer)) goto GETNEWNOTES;
+        if ((songinit != PLAY_STOPPED) && (cptr->tick == cptr->gatetimer)) goto GETNEWNOTES;
       }
 
       if (cptr->ptr[PTBL])
@@ -1007,7 +1010,7 @@ void playroutine(void)
         // Skip pulse when sequencer has been executed
         if (optimizepulse)
         {
-        	if ((!cptr->tick) && (!cptr->pattptr)) goto NEXTCHN;
+          if ((!cptr->tick) && (!cptr->pattptr)) goto NEXTCHN;
         }
 
         // Pulsetable jump
@@ -1050,7 +1053,7 @@ void playroutine(void)
           if (!cptr->pulsetime) cptr->ptr[PTBL]++;
         }
       }
-      if ((songinit == 0x80) || (cptr->tick != cptr->gatetimer)) goto NEXTCHN;
+      if ((songinit == PLAY_STOPPED) || (cptr->tick != cptr->gatetimer)) goto NEXTCHN;
 
       // New notes processing
       GETNEWNOTES:
@@ -1125,12 +1128,12 @@ void playroutine(void)
       cptr++;
     }
   }
-  if (songinit != 0x80) incrementtime();
+  if (songinit != PLAY_STOPPED) incrementtime();
 }
 
 void sequencer(int c, CHN *cptr)
 {
-  if ((songinit != 0x80) && (cptr->pattptr == 0x7fffffff))
+  if ((songinit != PLAY_STOPPED) && (cptr->pattptr == 0x7fffffff))
   {
     cptr->pattptr = startpattpos * 4;
     if (!cptr->advance) goto SEQDONE;
