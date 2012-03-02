@@ -500,7 +500,7 @@ mt_effect_3_found:
 mt_init:
               .IF (NUMSONGS > 1)
                 asl
-                sta mt_init+5
+                sta mt_init+6
                 asl
                 adc #$00
               .ENDIF
