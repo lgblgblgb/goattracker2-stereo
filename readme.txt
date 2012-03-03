@@ -1,4 +1,4 @@
-GoatTracker v2.72 Stereo
+GoatTracker v2.73 Stereo
 ------------------------
 
 Editor by Lasse Öörni (loorni@gmail.com)
@@ -111,3 +111,5 @@ v2.71     - Added keycode fix patch from Valerio Cannone.
 v2.72     - Fixed incorrect transpose range determination in the relocator.
           - Fixed crash in jam mode whan an illegal pattern command was executed
             from the wavetable.
+
+v2.73     - Fixed song init when several subtunes exist.
