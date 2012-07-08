@@ -1311,6 +1311,10 @@ mt_loadregs:
               .ENDIF
                 cpx #21
                 bcs mt_loadregs_sid2
+                lda mt_chnsr,x
+                sta SIDBASE+$06,x
+                lda mt_chnad,x
+                sta SIDBASE+$05,x
                 lda mt_chnpulselo,x
               .IF (SIMPLEPULSE == 0)
                 sta SIDBASE+$02,x
@@ -1319,11 +1323,7 @@ mt_loadregs:
               .ELSE
                 sta SIDBASE+$02,x
                 sta SIDBASE+$03,x
-              .ENDIF                
-                lda mt_chnsr,x
-                sta SIDBASE+$06,x                
-                lda mt_chnad,x
-                sta SIDBASE+$05,x
+              .ENDIF
 mt_loadregswavefreq:
                 lda mt_chnfreqlo,x
                 sta SIDBASE+$00,x
@@ -1343,6 +1343,10 @@ mt_nohr_legato:
               .ENDIF
 
 mt_loadregs_sid2:
+                lda mt_chnsr,x
+                sta SID2BASE-21+$06,x
+                lda mt_chnad,x
+                sta SID2BASE-21+$05,x
                 lda mt_chnpulselo,x
               .IF (SIMPLEPULSE == 0)
                 sta SID2BASE-21+$02,x
@@ -1352,10 +1356,6 @@ mt_loadregs_sid2:
                 sta SID2BASE-21+$02,x
                 sta SID2BASE-21+$03,x
               .ENDIF
-                lda mt_chnsr,x
-                sta SID2BASE-21+$06,x
-                lda mt_chnad,x
-                sta SID2BASE-21+$05,x
 mt_loadregswavefreq_sid2:
                 lda mt_chnfreqlo,x
                 sta SID2BASE-21+$00,x
