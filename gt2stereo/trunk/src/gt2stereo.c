@@ -968,7 +968,7 @@ void generalcommands(void)
     break;
 
     case KEY_F12:
-    case KEY_HELP:
+    case SDLK_HELP:
       onlinehelp(0,shiftpressed);
     break;
 
