@@ -115,6 +115,15 @@ void relocator(void)
   int speedtblsize = 0;
   int playersize = 0;
   int packedsize = 0;
+  FILE *songhandle = NULL;
+  int selectdone;
+  int opt = 0;
+  unsigned char speedcode[] = {0xa2,0x00,0x8e,0x04,0xdc,0xa2,0x00,0x8e,0x05,0xdc};
+  int c,d,e;
+  unsigned char patttemp[512];
+  unsigned char *songwork = NULL;
+  unsigned char *pattwork = NULL;
+  unsigned char *instrwork = NULL;
 
   channels = 6;
   fixedparams = 1;
@@ -152,18 +161,6 @@ void relocator(void)
   nocalculatedspeed = 1;
   nonormalspeed = 1;
   nozerospeed = 1;
-
-  FILE *songhandle = NULL;
-  int selectdone;
-  int opt = 0;
-  unsigned char speedcode[] = {0xa2,0x00,0x8e,0x04,0xdc,0xa2,0x00,0x8e,0x05,0xdc};
-
-  int c,d,e;
-
-  unsigned char patttemp[512];
-  unsigned char *songwork = NULL;
-  unsigned char *pattwork = NULL;
-  unsigned char *instrwork = NULL;
 
   stopsong();
 
