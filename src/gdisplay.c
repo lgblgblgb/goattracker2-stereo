@@ -45,6 +45,7 @@ void printstatus(void)
 {
   int c, d, color;
   int cc = cursorcolortable[cursorflash];
+  int maxpattlen = 0;
   menu = 0;
 
   if ((mouseb > MOUSEB_LEFT) && (mousey <= 1) && (!eamode)) menu = 1;
@@ -132,7 +133,6 @@ void printstatus(void)
     }
   }
 
-  int maxpattlen = 0;
   for (c = 0; c < MAX_CHN; c++)
   {
     if (pattlen[epnum[c]] > maxpattlen)
