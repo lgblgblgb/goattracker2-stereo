@@ -145,6 +145,7 @@ int sound_init(unsigned b, unsigned mr, unsigned writer, unsigned hardsid, unsig
       if (!playerthread) return 0;
     }
     #else
+    {
     char filename[80];
     sprintf(filename, "/dev/sid%d", lefthardsid);
     lefthardsidfd = open(filename, O_WRONLY, S_IREAD|S_IWRITE);
@@ -162,6 +163,7 @@ int sound_init(unsigned b, unsigned mr, unsigned writer, unsigned hardsid, unsig
     }
     else return 0;
     SDL_SetTimer(1000 / framerate, sound_timer);
+    }
     #endif
     goto SOUNDOK;
   }

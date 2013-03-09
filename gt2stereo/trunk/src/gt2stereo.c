@@ -76,7 +76,7 @@ char instrfilter[MAX_FILENAME];
 char instrpath[MAX_PATHNAME];
 char packedpath[MAX_PATHNAME];
 
-char *programname = "GoatTracker v2.73 Stereo";
+char *programname = "$VER: GoatTracker v2.73 Stereo";
 
 char textbuffer[MAX_PATHNAME];
 
@@ -91,6 +91,7 @@ int main(int argc, char **argv)
   FILE *configfile;
   int c,d;
 
+  programname += sizeof "$VER:";
   // Open datafile
   io_openlinkeddatafile(datafile);
 
@@ -967,6 +968,7 @@ void generalcommands(void)
     break;
 
     case KEY_F12:
+    case KEY_HELP:
       onlinehelp(0,shiftpressed);
     break;
 

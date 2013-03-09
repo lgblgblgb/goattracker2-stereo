@@ -96,9 +96,9 @@ void loadexternalpalette(void)
 
     if (strncmp("JASC-PAL", ln, 8) == 0)
     {
-      fgets(ln, sizeof(ln), ext_f);
-      fgets(ln, sizeof(ln), ext_f);
       int colors;
+      fgets(ln, sizeof(ln), ext_f);
+      fgets(ln, sizeof(ln), ext_f);
       if (sscanf(ln, "%d", &colors) == 1 && colors == 256)
       {
         while (!feof(ext_f))
