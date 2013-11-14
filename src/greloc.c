@@ -1524,7 +1524,7 @@ void relocator(void)
   }
   if (fileformat == FORMAT_SID)
   {
-    unsigned char ident[] = {'P', 'S', 'I', 'D', 0x00, 0x02, 0x00, 0x7c};
+    unsigned char ident[] = {'P', 'S', 'I', 'D', 0x00, 0x03, 0x00, 0x7c};
     unsigned char byte;
     // Identification
     fwrite(ident, sizeof ident, 1, songhandle);
@@ -1600,15 +1600,16 @@ void relocator(void)
     fwrite8(songhandle, byte);
     if (ntsc) byte = 8;
       else byte = 4;
-    if (sidmodel) byte |= 32;
-      else byte |= 16;
+    // Set model for both SIDs
+    if (sidmodel) byte |= 32 + 128;
+      else byte |= 16 + 64;
     fwrite8(songhandle, byte);
 
-    // Reserved longword
+    // Relocation and second SID address
     byte = 0x00;
     fwrite8(songhandle, byte);
     fwrite8(songhandle, byte);
-    fwrite8(songhandle, byte);
+    fwrite8(songhandle, ((sidaddress >> 16) & 0x0ff0) >> 4);
     fwrite8(songhandle, byte);
 
     // Load address
