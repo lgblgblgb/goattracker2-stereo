@@ -1,4 +1,4 @@
-GoatTracker v2.73 Stereo
+GoatTracker v2.74 Stereo
 ------------------------
 
 Editor by Lasse Öörni (loorni@gmail.com)
@@ -113,3 +113,7 @@ v2.72     - Fixed incorrect transpose range determination in the relocator.
             from the wavetable.
 
 v2.73     - Fixed song init when several subtunes exist.
+
+v2.74     - Reverted to old playroutine timing.
+          - Write v3 format SID header for SidPlay to detect the stereo songs
+            properly.
